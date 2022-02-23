@@ -8,7 +8,7 @@
 ██             ██             ██
 ██
  - codé en : UTF-8
- - langage : python 3
+ - langage : c++
  - GitHub  : github.com/pf4-DEV
 --|~|--|~|--|~|--|~|--|~|--|~|*/
 
@@ -26,7 +26,7 @@
 
 using namespace std;
 
-int grille[8][8] = {0};
+int grille[8][8] = { 0 };
 
 char get_piont(int num) {
 	if (num == 1) {
@@ -98,21 +98,65 @@ void chute(int colonne) {
 	}
 }
 
+int check_eg(int v1, int v2, int v3, int v4) {
+	if (v1 == v2 && v1 == v3 && v1 == v4) {
+		return v1;
+	}
+	return 0;
+}
+
+int is_gagnant(int tab[8][8]) {
+	for (int c = 0; c < 8; c++) {
+		for (int l = 0; l < 5; l++) {
+			if (check_eg(tab[c][l], tab[c][l + 1], tab[c][l + 2], tab[c][l + 3]) > 0) {
+				return 1;
+			}
+			if (check_eg(tab[l][c], tab[l + 1][c], tab[l + 2][c], tab[l + 3][c]) > 0) {
+				return 2;
+			}
+		}
+	}
+	return 0;
+}
+
+int start_ia() {
+	// TODO
+	// duplication de grille dans temp
+	int temp[8][8] = { 0 };
+	for (int i = 0; i < 8; i++) {
+		for (int j = 0; j < 8; j++) {
+			temp[i][j] = grille[i][j];
+		}
+	}
+
+	return 0;
+}
+
 int main() {
-	bool fin = 0;
 	bool tour = 0;
 	int colonne;
 
-	while (!fin) {
+	while (1) {
 		print_grille();
 		colonne = get_user_choix();
-		
+
 		grille[colonne][0] = tour + 1;
-		
+
 		chute(colonne);
-		
+
 		clear_all();
 
+		if (is_gagnant(grille) > 0) {
+			break;
+		}
+
 		tour = !tour;
+	}
+	cout << "Bravo joueur " << get_piont(tour + 1) << " vous avec gagner avec une ";
+	if (is_gagnant(grille) == 1) {
+		cout << "colonne!\n";
+	}
+	else if (is_gagnant(grille) == 2) {
+		cout << "ligne!\n";
 	}
 }
