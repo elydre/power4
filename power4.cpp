@@ -104,7 +104,7 @@ int check_eg(int v1, int v2, int v3, int v4) {
 
 int is_gagnant(int tab[8][8]) {
 
-	// lignes & colonnes
+	// ligne & colonnes
 
 	for (int c = 0; c < 8; c++) {
 		for (int l = 0; l < 5; l++) {
