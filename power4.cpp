@@ -1,13 +1,13 @@
 /*|~|--|~|--|~|--|~|--|~|--|~|--
 
-██  ████        ██████        ██
-████    ██     ██           ████
-██      ██   ████████     ██  ██
-████████       ██       ██    ██
-██             ██       █████████
-██             ██             ██
-██
- - codé en : UTF-8
+ÛÛ  ÛÛÛÛ        ÛÛÛÛÛÛ        ÛÛ
+ÛÛÛÛ    ÛÛ     ÛÛ           ÛÛÛÛ
+ÛÛ      ÛÛ   ÛÛÛÛÛÛÛÛ     ÛÛ  ÛÛ
+ÛÛÛÛÛÛÛÛ       ÛÛ       ÛÛ    ÛÛ
+ÛÛ             ÛÛ       ÛÛÛÛÛÛÛÛÛ
+ÛÛ             ÛÛ             ÛÛ
+ÛÛ
+ - code en : UTF-8
  - langage : c++
  - GitHub  : github.com/pf4-DEV
 --|~|--|~|--|~|--|~|--|~|--|~|*/
@@ -92,9 +92,6 @@ void chute(int colonne) {
 			print_grille();
 			this_thread::sleep_for(chrono::milliseconds(100));
 		}
-		else {
-			break;
-		}
 	}
 }
 
@@ -119,36 +116,84 @@ int is_gagnant(int tab[8][8]) {
 	return 0;
 }
 
-int start_ia() {
-	// TODO
-	// duplication de grille dans temp
-	int temp[8][8] = { 0 };
-	for (int i = 0; i < 8; i++) {
-		for (int j = 0; j < 8; j++) {
-			temp[i][j] = grille[i][j];
+class IA {
+private:
+	int grille_test[8][8] = { 0 };
+
+	void vute(int colonne) {
+		for (int l = 0; l < 7; l++) {
+			if (grille_test[colonne][l] > 0 && grille_test[colonne][l + 1] == 0) {
+				grille_test[colonne][l + 1] = grille_test[colonne][l];
+				grille_test[colonne][l] = 0;
+			}
 		}
 	}
 
-	return 0;
-}
+	void push_grille(int g[8][8]) {
+		for (int i = 0; i < 8; i++) {
+			for (int j = 0; j < 8; j++) {
+				grille_test[i][j] = grille[i][j];
+			}
+		}
+	}
+
+	int cp_gagnant(int joueur) {
+		for (int c = 0; c < 8; c++) {
+			push_grille(grille);
+			grille_test[c][0] = joueur;
+			vute(c);
+			if (is_gagnant(grille_test) > 0) {
+				return c;
+			}
+		}
+		return -1;
+	}
+
+public:
+	int play() {
+		int val;
+		val = cp_gagnant(2);
+		if (val >= 0) {
+			return val;
+		}
+		val = cp_gagnant(1);
+		if (val >= 0) {
+			return val;
+		}
+		while (1) {
+			val = rand() % 10 - 1;
+			if (val < 8 && val >= 0 && grille[val][0] == 0) {
+				return val;
+			}
+		}
+
+	}
+};
 
 int main() {
 	bool tour = 0;
 	int colonne;
+	IA joueur2;
 
 	while (1) {
 		print_grille();
-		colonne = get_user_choix();
+
+		if (!tour) {
+			colonne = get_user_choix();
+		}
+		else {
+			colonne = joueur2.play();
+		}
 
 		grille[colonne][0] = tour + 1;
 
 		chute(colonne);
 
-		clear_all();
-
 		if (is_gagnant(grille) > 0) {
 			break;
 		}
+		
+		clear_all();
 
 		tour = !tour;
 	}
