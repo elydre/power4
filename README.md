@@ -22,6 +22,4 @@ g++ power4.cpp -o power4
 ```
 
 ## TODO
-- JcJ / IAcJ
-- coup en diagonale
 - meilleur IA (minimax)
