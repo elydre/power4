@@ -103,6 +103,9 @@ int check_eg(int v1, int v2, int v3, int v4) {
 }
 
 int is_gagnant(int tab[8][8]) {
+
+	// lignes & colonnes
+
 	for (int c = 0; c < 8; c++) {
 		for (int l = 0; l < 5; l++) {
 			if (check_eg(tab[c][l], tab[c][l + 1], tab[c][l + 2], tab[c][l + 3]) > 0) {
@@ -110,6 +113,19 @@ int is_gagnant(int tab[8][8]) {
 			}
 			if (check_eg(tab[l][c], tab[l + 1][c], tab[l + 2][c], tab[l + 3][c]) > 0) {
 				return 2;
+			}
+		}
+	}
+
+	// diagonales
+
+	for (int c = 0; c < 5; c++) {
+		for (int l = 0; l < 5; l++) {
+			if (check_eg(tab[c][l], tab[c + 1][l + 1], tab[c + 2][l + 2], tab[c + 3][l + 3]) > 0) {
+				return 3;
+			}
+			if (check_eg(tab[l +3 ][c], tab[l + 2][c + 1], tab[l + 1][c + 2], tab[l][c + 3]) > 0) {
+				return 4;
 			}
 		}
 	}
@@ -203,5 +219,8 @@ int main() {
 	}
 	else if (is_gagnant(grille) == 2) {
 		cout << "ligne!\n";
+	}
+	else {
+		cout << "diagonale!\n";
 	}
 }
