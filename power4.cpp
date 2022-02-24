@@ -192,7 +192,7 @@ int main() {
 		if (is_gagnant(grille) > 0) {
 			break;
 		}
-		
+
 		clear_all();
 
 		tour = !tour;
