@@ -181,7 +181,6 @@ public:
 				return val;
 			}
 		}
-
 	}
 };
 
