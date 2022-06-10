@@ -18,7 +18,6 @@ ___________________________________
 #include <chrono>
 #include <thread>
 
-
 // macro pour remonter une ligne et effacer
 #define UP "\033[F"
 #define CLEAR "\033[K"
